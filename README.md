@@ -15,7 +15,7 @@ Buttons::stop();
 The class is fully documented internally, but I may write a full usage guide here later on.
 
 ## Library Setup
-Just put the buttons.hpp and buttons.cpp file into your sketch folder, then add `#include "buttons.hpp` to your .ino source file and any other files that will reference the buttons class.
+Just put the buttons.hpp and buttons.cpp file into your sketch folder, then add `#include "buttons.hpp"` to your .ino source file and any other files that will reference the buttons class.
 
 ## Comments, Requests, Bugs & Contributions
 All are welcome. Please file an "Issue" in the Bug Tracker.
