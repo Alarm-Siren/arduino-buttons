@@ -58,8 +58,13 @@ class Buttons final
      * @param numberOfButtons   Number of buttons and size of the buttonPins array
      * @return                  true on success, false on failure.
      */
-    static boolean begin(const byte* const buttonPins, size_t numberOfButtons);
+    static boolean begin(const byte* const buttonPins, byte numberOfButtons);
 
+    /**
+     * TO DO
+     */
+    static boolean begin(std::initializer_list<byte> buttonPins);
+    
     /**
      * Detach interrupts from the pins controlled by this object and free up all associated memory.
      * If the object has not been started with begin(), or begin() failed, calling this will do nothing.
@@ -75,8 +80,19 @@ class Buttons final
      * @return                  true if the button has been clicked since the Change Flag
      *                          was last cleared, false otherwise.
      */
-    static boolean clicked(size_t buttonId, boolean clearChangeFlag);
-
+    static boolean clicked(byte buttonId, boolean clearChangeFlag);
+    
+    /**
+     * Returns a boolean value indicating if the user has "released" the button,
+     * defined as the button being up and the Change Flag set.
+     *
+     * @param buttonId          Index of the button whose status is to be checked.
+     * @param clearChangeFlag   If true, the Change Flag for this button will be cleared at the same time.
+     * @return                  true if the button has been clicked since the Change Flag
+     *                          was last cleared, false otherwise.
+     */
+    static boolean released(byte buttonId, boolean clearChangeFlag);
+    
     /**
      * Returns a boolean value indicating if the button is currently "down"/"pressed".
      * This return value is independent of the state of the Change Flag, however you can
@@ -87,7 +103,7 @@ class Buttons final
      * @param clearChangeFlag   If true, the Change Flag for this button will be cleared at the same time.
      * @return                  true if the button is down.
      */
-    static boolean down(size_t buttonId, boolean clearChangeFlag);
+    static boolean down(byte buttonId, boolean clearChangeFlag);
 
     /**
      * Returns a boolean value indicating if the button is currently "up"/"not pressed".
@@ -99,7 +115,7 @@ class Buttons final
      * @param clearChangeFlag   If true, the Change Flag for this button will be cleared at the same time.
      * @return                  true if the button is up.
      */
-    static boolean up(size_t buttonId, boolean clearChangeFlag);
+    static boolean up(byte buttonId, boolean clearChangeFlag);
 
     /**
      * Returns a boolean value indicating if the button's state has changed since the 
@@ -111,7 +127,7 @@ class Buttons final
      * @param clearChangeFlag   If true, the Change Flag for this button will be cleared at the same time.
      * @return                  true if the button's state has changed.
      */
-    static boolean changed(size_t buttonId, boolean clearChangeFlag);
+    static boolean changed(byte buttonId, boolean clearChangeFlag);
 
     /**
      * This method clears all Change Flags for all buttons.
@@ -125,7 +141,7 @@ class Buttons final
      *
      * @return    The number of buttons controlled by this class
      */
-    static size_t numberOfButtons();
+    static byte numberOfButtons();
 
     //This class has only static members, therefore constructors etc are pointless.
     Buttons() = delete;
@@ -138,7 +154,7 @@ class Buttons final
     /**
      * Debounce period in milliseconds.
      */
-    static constexpr unsigned long DEBOUNCE_DELAY = 50;
+    static unsigned long DEBOUNCE_DELAY = 50;
 
     /**
      * This structure encompasses information relating to an individual button.
@@ -184,7 +200,7 @@ class Buttons final
      * Stores the number of buttons controlled by this class,
      * which is also the size of the _buttonPins and _buttonStatus arrays.
      */
-    static size_t _numberOfButtons;
+    static byte _numberOfButtons;
 
     /**
      * This array stores pin numbers for each button controlled by this class.

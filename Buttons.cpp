@@ -39,20 +39,32 @@
  * @version     1.0
  */
 
-#include "buttons.hpp"
+#include "buttons.h"
+#include <initializer_list>
 
-size_t Buttons::_numberOfButtons = 0;
+byte Buttons::_numberOfButtons = 0;
 byte* Buttons::_buttonPins = nullptr;
 volatile Buttons::Button* Buttons::_buttonStatus = nullptr;
 boolean Buttons::_begun = false;
 
-boolean Buttons::begin(const byte* const buttonPins, size_t numberOfButtons)
+/**
+ * TO DO
+ */
+boolean Buttons::begin(std::initializer_list<byte> buttonPins)
+{
+    
+  for (auto pin : buttonPins) {
+    
+  }
+}
+
+boolean Buttons::begin(const byte* const buttonPins, byte numberOfButtons)
 {
   // Abort if the buttonPins array is null
   if (nullptr == buttonPins) return false;
   
   // If Buttons has already been started, kill it before restarting it.
-  if (_begun) stop();
+  if (_begun) end();
 
   // Setup internal storage buffers, etc.
   _numberOfButtons = numberOfButtons;
@@ -65,7 +77,7 @@ boolean Buttons::begin(const byte* const buttonPins, size_t numberOfButtons)
   }
 
   // Set up the input pins themselves.
-  for (size_t i = 0; i < numberOfButtons; i++) {
+  for (byte i = 0; i < numberOfButtons; i++) {
     _buttonPins[i] = buttonPins[i];
     pinMode(buttonPins[i], INPUT_PULLUP);
   }
@@ -75,7 +87,7 @@ boolean Buttons::begin(const byte* const buttonPins, size_t numberOfButtons)
   delay(10);
 
   //Set up the interrupts on the pins.
-  for (size_t i = 0; i < numberOfButtons; i++) {
+  for (byte i = 0; i < numberOfButtons; i++) {
     attachInterrupt(digitalPinToInterrupt(buttonPins[i]), &Buttons::button_ISR, CHANGE);
   }
 
@@ -84,14 +96,14 @@ boolean Buttons::begin(const byte* const buttonPins, size_t numberOfButtons)
   return true;
 }
 
-void Buttons::stop()
+void Buttons::end()
 {
   // If the object is already stopped, we don't need to do anything.
   if (!_begun)
     return;
   
   //Disable the interrupts
-  for (size_t i = 0; i < _numberOfButtons; i++) {
+  for (byte i = 0; i < _numberOfButtons; i++) {
     detachInterrupt(digitalPinToInterrupt(_buttonPins[i]));
   }
   
@@ -105,7 +117,7 @@ void Buttons::stop()
 
 void Buttons::button_ISR()
 {
-  for (size_t i = 0; i < _numberOfButtons; i++) {
+  for (byte i = 0; i < _numberOfButtons; i++) {
     const boolean readState = !digitalRead(_buttonPins[i]);
     if (readState != _buttonStatus[i].currentState) {
       if (millis() > _buttonStatus[i].lastChangeTime + DEBOUNCE_DELAY) {
@@ -117,12 +129,17 @@ void Buttons::button_ISR()
   }
 }
 
-boolean Buttons::clicked(size_t buttonId, boolean clearChangeFlag)
+boolean Buttons::clicked(byte buttonId, boolean clearChangeFlag)
 {
   return changed(buttonId, clearChangeFlag) && down(buttonId, false);
 }
 
-boolean Buttons::down(size_t buttonId, boolean clearChangeFlag)
+boolean Buttons::released(byte buttonId, boolean clearChangeFlag)
+{
+  return changed(buttonId, clearChangeFlag) && !down(buttonId, false);
+}
+
+boolean Buttons::down(byte buttonId, boolean clearChangeFlag)
 {
   if (!_begun)
     return false;
@@ -133,12 +150,12 @@ boolean Buttons::down(size_t buttonId, boolean clearChangeFlag)
   return  _buttonStatus[buttonId].currentState;
 }
 
-boolean Buttons::up(size_t buttonId, boolean clearChangeFlag)
+boolean Buttons::up(byte buttonId, boolean clearChangeFlag)
 {
   return !down(buttonId, clearChangeFlag);
 }
 
-boolean Buttons::changed(size_t buttonId, boolean clearChangeFlag)
+boolean Buttons::changed(byte buttonId, boolean clearChangeFlag)
 {
   if (!_begun)
     return false;
@@ -156,12 +173,12 @@ void Buttons::clearAllChangeFlags()
   if (!_begun)
     return;
   
-  for (size_t i = 0; i < _numberOfButtons; i++) {
+  for (byte i = 0; i < _numberOfButtons; i++) {
     _buttonStatus[i].changeFlag = false;
   }
 }
 
-size_t Buttons::numberOfButtons()
+byte Buttons::numberOfButtons()
 {
   if (_begun) {
     return _numberOfButtons;
@@ -169,4 +186,3 @@ size_t Buttons::numberOfButtons()
     return 0;
   }
 }
-
