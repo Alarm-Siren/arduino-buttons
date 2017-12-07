@@ -5,11 +5,16 @@ Although in principle this class is compatible with all members of the Arduino p
 
 Note that for pragmatic reasons, this is a fully static class. This means you do not need to create any instances of it and access it using static syntax, e.g.
 ```
-Buttons::begin({1}, 1);
-if (Buttons::clicked(1)) {
-  Serial.println("Clicked!);
+byte pins[] = {1, 2};
+Buttons.begin(pins, 2);
+if (Buttons.clicked(1)) {
+  Serial.println("Button 1 Clicked!);
 }
-Buttons::stop();
+if (Buttons.clicked(2)) {
+  Serial.println("Button 2 Clicked!");
+}
+Buttons.clearChangeFlag();
+Buttons.end();
 ```
 
 The class is fully documented internally, but I may write a full usage guide here later on.
