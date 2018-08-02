@@ -1,19 +1,19 @@
 # Syntax Colouring for Buttons library
 
 # Classes, datatypes & C++ keywords (K1)
-ButtonsClass			KEYWORD1
-Buttons					KEYWORD1
+ButtonsClass	KEYWORD1
+Buttons	KEYWORD1
 
 # Methods & Functions (K2)
-begin					KEYWORD2
-end						KEYWORD2
-clicked					KEYWORD2
-released				KEYWORD2
-down					KEYWORD2
-up						KEYWORD2
-changed					KEYWORD2
-clearChangeFlag			KEYWORD2
-numberOfButtons			KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
+clicked	KEYWORD2
+released	KEYWORD2
+down	KEYWORD2
+up	KEYWORD2
+changed	KEYWORD2
+clearChangeFlag	KEYWORD2
+numberOfButtons	KEYWORD2
 
 # setup and loop functions, and Serial keywords (K3)
 
