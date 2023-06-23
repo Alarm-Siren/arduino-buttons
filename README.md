@@ -1,6 +1,7 @@
+# Arduino Buttons Library
+
 [![Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](https://www.repostatus.org/badges/latest/unsupported.svg)](https://www.repostatus.org/#unsupported)
 
-# Arduino Buttons Library
 An interrupt-driven, fully-debounced class to manage input from physical buttons on the Arduino platform.
 
 Although in principle this class is compatible with all members of the Arduino platform, note that it is limited to only having buttons connected to those pins that accept interrupts - on the ARM boards (Due, Zero etc) this is all pins, but on AVR boards (e.g. Uno, Leonardo, Mega 2560, etc) these pins are in limited supply.
